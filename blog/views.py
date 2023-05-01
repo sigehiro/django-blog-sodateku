@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
-from blog.models import Post
+from blog.models import Post, Comment
+from .forms import CommentCreateForm
 
 def index(request):
     posts = Post.objects.all()
@@ -27,8 +28,10 @@ def store(request):
 # 詳細画面
 def show(request, id):
     post = get_object_or_404(Post, pk=id)
+    comments = Comment.objects.filter(target=id)
     context = {
         'post': post,
+        'comments': comments
     }
     return render(request,'blog/show.html', context)
 
@@ -59,5 +62,22 @@ def destroy(request, id):
     return redirect(index)
 
 # コメント画面
-def comment(request):
-    return render(request,'blog/comment.html')
+def comment(request, id):
+    post = get_object_or_404(Post, pk=id)
+    if request.method == 'POST':
+        comment_create_form = CommentCreateForm(request.POST)
+        if comment_create_form.is_valid():
+            comment = comment_create_form.save(commit=False)
+            comment.user = request.user
+            comment.target = post
+            comment.save()
+            return redirect(show, id)
+    else:
+        comment_create_form = CommentCreateForm()   
+    
+    context = {
+        'post': post,
+        'form': comment_create_form,
+    
+    }
+    return render(request,'blog/comment.html', context)

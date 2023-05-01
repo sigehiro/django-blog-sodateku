@@ -9,3 +9,12 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
+    
+class Comment(models.Model):
+    text = models.TextField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    target = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text[:20]
