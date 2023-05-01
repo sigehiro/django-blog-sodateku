@@ -1,8 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
+from blog.models import Post
 
 def index(request):
-    return render(request, 'blog/index.html')
+    posts = Post.objects.all()
+    context = {
+        'posts': posts,
+        
+    }
+    return render(request, 'blog/index.html', context)
 
 # 新規投稿
 def create(request):
@@ -13,8 +19,12 @@ def store(request):
     pass
 
 # 詳細画面
-def show(request):
-    return render(request,'blog/show.html')
+def show(request, id):
+    post = get_object_or_404(Post, pk=id)
+    context = {
+        'post': post,
+    }
+    return render(request,'blog/show.html', context)
 
 # 編集画面
 def edit(request):

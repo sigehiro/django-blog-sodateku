@@ -8,12 +8,15 @@
         <div class="col-md-8">
           <div class="card mt-3">
             <div class="card-header">
-              <h5>タイトル：おはよう</h5>
+              <h5>タイトル：{{ post.title }}</h5>
             </div>
             <div class="card-body">
-              <p class="card-text">内容：今日のセブは快晴</p>
-              <p>投稿日時：2022年1月1日8:54</p>
-              <p>更新日時：2022年1月3日9:27</p>
+              <p class="card-text">内容：{{ post.text }}</p>
+              <p>投稿日時：{{ post.created_at|date:'Y/m/d H:i:s'  }}</p>
+              {% if post.created_at|date:'Y.m.d.H.i.s' != post.updated_at|date:'Y.m.d.H.i.s' %}
+              <p>更新日時：{{ post.updated_at|date:'Y/m/d H:i:s'  }}</p>
+              {% endif %}
+              <p class="card-text">投稿者 :{{post.user}} さん</p>
               <a href="{% url 'edit' %}" class="btn btn-primary mt-3">編集する</a>
               <form action="#" method="post">
                 <input type='submit' value='削除' class="btn btn-danger mt-3" onclick='return confirm("本当に削除しますか？");'>
@@ -33,7 +36,7 @@
         <div class="col-md-8 mt-5">
           コメント一覧
           <div class="card mt-3">
-            <h5 class="card-header">投稿者：Seedさん</h5>
+                  <p class="card-text">投稿者 :{{post.user}}</p>
             <div class="card-body">
               <h5 class="card-title">投稿日時：2021/11/08</h5>
               <p class="card-text">内容：今日のセブは快晴</p>
