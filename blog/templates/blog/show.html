@@ -17,8 +17,9 @@
               <p>更新日時：{{ post.updated_at|date:'Y/m/d H:i:s'  }}</p>
               {% endif %}
               <p class="card-text">投稿者 :{{post.user}} さん</p>
-              <a href="{% url 'edit' %}" class="btn btn-primary mt-3">編集する</a>
-              <form action="#" method="post">
+              <a href="{% url 'edit' id=post.id %}" class="btn btn-primary mt-3">編集する</a>
+              <form action="{% url 'delete' id=post.id %}" method="post">
+                {% csrf_token %}
                 <input type='submit' value='削除' class="btn btn-danger mt-3" onclick='return confirm("本当に削除しますか？");'>
               </form>
             </div>

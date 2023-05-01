@@ -7,16 +7,21 @@
         <div class="col-md-8">
           <div class="card mt-3">
             <div class="card-header">
-              <h5>タイトル：おはよう</h5>
+              <h5>タイトル：{{ post.title }}</h5>
             </div>
             <div class="card-body">
-              <p class="card-text">内容：今日のセブは快晴</p>
-              <p>投稿日時：2022年1月1日8:54</p>
-              <p>更新日時：2022年1月3日9:27</p>
+              <p class="card-text">内容：{{ post.text }}</p>
+
+              <p>投稿日時：{{ post.created_at|date:'Y/m/d H:i:s'  }}</p>
+              {% if post.created_at|date:'Y.m.d.H.i.s' != post.updated_at|date:'Y.m.d.H.i.s' %}
+              <p>更新日時：{{ post.updated_at|date:'Y/m/d H:i:s'  }}</p>
+              {% endif %}
+
             </form>
           </div>
         </div>
-        <form action="#" method="POST">
+        <form action="{% url 'update' id=post.id %}" method="POST">
+          {% csrf_token %}
           <div class="form-group mt-5">
             <label>タイトル</label>
             <input type="text" class="form-control" value="" name="title">
